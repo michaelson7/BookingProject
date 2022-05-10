@@ -1,0 +1,105 @@
+﻿@page
+@model LoginModel
+@{
+    Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    @*CSS*@
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @*dark theme*@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    @*icofont*@
+    <link rel="stylesheet" href="~/lib/icofont/icofont.min.css" />
+
+    @*alertify*@
+    <script src="~/lib/alertifyjs/alertify.min.js"></script>
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/themes/default.min.css" rel="stylesheet" />
+</head>
+<body class="bg-light">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            @*response div*@
+                            @if (Model.hasResponse)
+                            {
+                                <div class="mb-4">
+                                    @if (Model.hasError)
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            <b>@Model.errorMessage</b>
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="text-center card-header">
+                                    @*<div>
+                                            <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/c0840e59-db43-4681-ae7b-31a04dc4bc55/d7eqdvw-4e97ac92-e4b9-4498-9655-e4d612eb478b.png/v1/fill/w_1192,h_670,strp/random_logo_by_criticl_d7eqdvw-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTAwIiwicGF0aCI6IlwvZlwvYzA4NDBlNTktZGI0My00NjgxLWFlN2ItMzFhMDRkYzRiYzU1XC9kN2VxZHZ3LTRlOTdhYzkyLWU0YjktNDQ5OC05NjU1LWU0ZDYxMmViNDc4Yi5wbmciLCJ3aWR0aCI6Ijw9MTYwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.X991O1jF5lTNZbbEoHEfoo6nlHEihBMHMIm5-uBCXcU" width="300" height="100" alt="No Image Found" />
+                                        </div>*@
+                                    <div>
+                                        <h3 class=" font-weight-light my-4">Login</h3>
+                                    </div>
+                                </div>
+
+                                <div class="d-none" id="errorMessage">
+                                    <h5 class="text-danger p-4 text-center">Account not found, <br />Please check Email & Password</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form method="post" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label class="small mb-1" for="inputEmailAddress">Email</label>
+                                            <input id="merchantCode" name="email" class="form-control py-4" type="text"
+                                                   placeholder="Enter Email" value="admin@admin.com" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="small mb-1" for="inputPassword">Password</label>
+                                            <input id="secretCode" name="password" class="form-control py-4" type="password"
+                                                   placeholder="Enter Password" value="admin@admin.com" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" />
+                                                <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <a class="small" asp-area="" asp-page="/Screens/Account/PasswordReset" asp-route-accountReset="true">Forgot Password?</a>
+                                            <button class="btn btn-primary" id="log_smt_btn" type="submit">
+                                                <span id="btnSpinner" class="d-none spinner-border  spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                                Login
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small">
+                                        <a class="nav-link text-white"
+                                           asp-area="" asp-page="/Registration">Need an account? Register now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>

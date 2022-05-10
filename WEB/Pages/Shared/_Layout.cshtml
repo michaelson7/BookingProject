@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] ~ Bookie</title>
+
+    @* j qury *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    @*style*@
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrapDark.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @*icofont*@
+    <link rel="stylesheet" href="~/lib/icofont/icofont.min.css" />
+
+    @*fontawsome*@
+    <link href="~/lib/fontAwsome/css/fontawesome.css" rel="stylesheet">
+    <link href="~/lib/fontAwsome/css/brands.css" rel="stylesheet">
+    <link href="~/lib/fontAwsome/css/solid.css" rel="stylesheet">
+
+    @*alertify*@
+    <script src="~/lib/alertifyjs/alertify.min.js"></script>
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/themes/default.min.css" rel="stylesheet" />
+
+    @* page loaders *@
+    <script src="~/lib/progress/nprogress.js"></script>
+    <link rel="stylesheet" href="~/lib/progress/nprogress.css" />
+
+    <link href='~/lib/fullcalendar/lib/main.css' rel='stylesheet' />
+    <script src='~/lib/fullcalendar/lib/main.js'></script>
+
+    <style>
+        .eventClass a {
+            background-color: #dda919 !important;
+            color: #FFF !important;
+        }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow" style="background-color: #7c0058">
+            <div class="mr-5 ml-5 d-flex justify-content-between w-100">
+                <div>
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Bookie</a>
+                </div>
+                <div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white d-none"
+                                   asp-area="" asp-page="/Users/Users" id="admin2">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area=""
+                                   asp-page="/Bookings/MyBookings">My Bookings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white d-none" asp-area=""
+                                   asp-page="/Bookings/Bookings" id="admin1">Bookings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white d-none"
+                                   asp-area="" asp-page="/Services/Services"id="admin3">Services</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-muted"> | </a>
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a class="nav-link text-white btn dropdown-toggle" id="userDrop"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span id="accountName"></span>
+                                    </a>
+                                    <div class="dropdown-menu text-center" aria-labelledby="userDrop">
+                                        <a class="dropdown-item" asp-area="" asp-page="/Screens/SystemData/passwordReset">Reset Password</a>
+                                        <a class="dropdown-item" href="#" onclick="logOut()">Log Out</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div id="layoutSidesnav">
+        @*main body*@
+        <div id="layoutSidenav_content">
+            <main>
+                <div id="cfluid" class="container-fluid">
+                    <div>
+                        <div id="loading">
+                            <div class="d-flex justify-content-center align-items-center flex-column vh-100">
+                                <div class="mb-auto"></div>
+                                <div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>
+                                <div class="mt-auto"></div>
+                            </div>
+                        </div>
+                        <div id="mainBody" class="d-none mt-3  mr-5 ml-5">
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- adding footer -->
+            <footer class="py-4 align-bottom  bg-dark mt-auto footer navbar-fixed-bottom">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small mr-5 ml-5">
+                        <div class="text-muted">&copy; 2021 - Swish Management Console</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* Data Table *@
+    <link rel="stylesheet" type="text/css" href="~/lib/DataTables/datatables.min.css" />
+    <script type="text/javascript" src="~/lib/DataTables/datatables.min.js"></script>
+
+    @* Charts *@
+    <script src="~/lib/chart/Chart.js" crossorigin="anonymous"></script>
+
+    @* Selectisize *@
+    <script src="~/lib/selectisize/selectize.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/lib/selectisize/selectize.bootstrap3.min.css" crossorigin="anonymous" />
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+
+<script>
+    //log out
+    function logOut() {
+        var confirmText = "Are you sure you want to log out?";
+        if (confirm(confirmText)) {
+            deleteAllCookies();
+            location.href = "/Login";
+        }
+    }
+
+    $(document).ready(async function () {
+        var userName = getCookie("userName");
+        var userRole = getCookie("userRole");
+
+        if (userName != "") {
+            $('#accountName').html(userName + ``);
+        } else {
+            location.href = "/Login";
+        }
+
+        if (userName == "admin@admin.com") { 
+            $("#admin1").removeClass("d-none");
+            $("#admin2").removeClass("d-none");
+            $("#admin3").removeClass("d-none");
+        }
+    });
+</script> 

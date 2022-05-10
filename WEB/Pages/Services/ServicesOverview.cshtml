@@ -1,0 +1,211 @@
+﻿@page
+@model WEB.Pages.Services.ServicesOverviewModel
+@{
+}
+
+<div>
+    <div>
+        @*response div*@
+        @if (Model.hasResponse)
+        {
+            <div class="mb-4">
+                @if (Model.hasError)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <b>@Model.errorMessage</b>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-success" role="alert">
+                        <b>@Model.dbOperation</b>
+                    </div>
+                }
+            </div>
+        }
+
+
+        <img src="~/Images/@Model.ServicesModels.ImagePath" height="500" class="rounded w-100" alt="File Not Found" />
+        <br /> <br />
+        <div class="d-flex justify-content-between">
+            <div class=""><span class="text-muted">COST:</span> ZMW @Model.ServicesModels.Cost</div>
+            <div class="row">
+                <div class="col-md-6"> <button data-toggle="modal" data-target="#BookingModal" class="btn btn-primary">Check<br />Availability</button></div>
+                <div class="col-md-6"> <button data-toggle="modal" data-target="#BookingModal" class="btn btn-success">Make<br />Booking</button></div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mt-4">
+        <h3>Add Review</h3>
+        <div class="">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" />
+                <input type="hidden" name="dbOperations" value="Create" />
+                <input type="hidden" name="src" value="Rating" />
+                <input type="hidden" name="serviceId" value="@Model.id" />
+                <textarea type="text" class="form-control" name="reviews" id="review" required></textarea>
+                <button id="btnEdit" type="submit" class="btn btn-primary mt-3 w-100">
+                    <span id="btnSpinner" class="d-none spinner-border  spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    Upload
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- database table -->
+    <div class="card mt-4">
+        <h3>Reviews</h3>
+        <div class="row">
+            @{
+                foreach (var data in Model.ServicesModels.bookingReviewsModel)
+                {
+                    <div class="col-md-12 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div><h5>@data.usersModel.Names</h5></div>
+                                    @if (Model.userId == data.usersModel.Id)
+                                    {
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <button onclick="editRatingModel(@data.Id)" class="bg-transparent btn btn-success text-success">
+                                                    Edit
+                                                </button>
+                                            </div>
+                                            <div class="p-2"></div>
+                                            <div>
+                                                <form method="post" enctype="multipart/form-data">
+                                                    <input type="hidden" name="src" value="Rating" />
+                                                    <input type="hidden" name="deleteId" value="@data.Id" />
+                                                    <input type="hidden" name="serviceId" value="@Model.id" />
+                                                    <div>
+                                                        <button class="bg-transparent btn btn-danger text-danger">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <hr />
+                                <h5>@data.Reviews</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<div id="Ratingmodal" class="modal fade ModelDialog" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" />
+                <input type="hidden" name="dbOperations" value="Update" />
+                <input type="hidden" name="src" value="Rating" />
+                <input type="hidden" name="serviceId" value="@Model.id" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="font-weight-bold">Review</label>
+                                <input type="text" class="form-control" name="reviews" id="reviews" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="btnEdit" type="submit" class="btn btn-primary">
+                        <span id="btnSpinner" class="d-none spinner-border  spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Save changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="BookingModal" class="modal fade ModelDialog" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" />
+                <input type="hidden" name="dbOperations" value="Create" />
+                <input type="hidden" name="src" value="Booking" />
+                <input type="hidden" name="serviceId" value="@Model.id" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="font-weight-bold">Booking Date</label>
+                                <input type="date" class="form-control" name="bookingDate" id="bookingDate" required>
+                                <br />
+                                <div id='calendar'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="btnEdit" type="submit" class="btn btn-primary">
+                        <span id="btnSpinner" class="d-none spinner-border  spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Save changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(async function () {
+        await simulateAsycCall();
+        displayMainBody();
+        getDate();
+
+    });
+
+    function getDate() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            events: [
+                @{
+                    foreach (var data in Model._BookingsModel) {
+                        <text>
+                        {
+                            title: '@data.UsersModel.Names',
+                            start: '@data.BookingDate.Year-@data.BookingDate.Month.ToString("00")-@data.BookingDate.Day.ToString("00")',
+                        },
+                        </text>
+                    }
+                 }
+            ],
+        });
+        calendar.render();
+    }
+
+    async function editRatingModel(index) {
+        $('input[name=id]').val(index);
+        $('#Ratingmodal').modal('show');
+    }
+</script> 

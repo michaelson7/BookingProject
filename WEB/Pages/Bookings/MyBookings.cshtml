@@ -1,0 +1,153 @@
+﻿@page
+@model WEB.Pages.Bookings.MyBookingsModel
+@{
+}
+
+<div>
+    <h4 class="mt-4"> Bookie Portal</h4>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"><a href='@Url.Action("Index","Home")' class="ml-1 mr-1">Dashboard</a> / My Bookings</li>
+    </ol>
+
+    @*response div*@
+    @if (Model.hasResponse)
+    {
+        <div class="mb-4">
+            @if (Model.hasError)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <b> @Model.errorMessage</b>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success" role="alert">
+                    <b>@Model.dbOperation</b>
+                </div>
+            }
+        </div>
+    }
+
+
+    <!-- database table -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Current Bookings
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Service</th>
+                            <th>Date Booked</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableData">
+                        @{
+                            int i = 0;
+                            foreach (var data in Model._BookingsModel)
+                            {
+                                <tr>
+                                    <td>@data.Id</td>
+                                    <td>@data.ServiceModel.Title</td>
+                                    <td>@data.BookingDate</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="p-2">
+                                                <form method="post">
+                                                    <input type="hidden" name="deleteId" value="@data.Id" />
+                                                    <button type="button" class="btn bg-transparent text-primary" onclick="editModel(@i)">
+                                                        Edit
+                                                    </button>
+                                                    <span class="pr-1 pl-1"></span>
+                                                    <button type="submit" class="btn bg-transparent text-danger" onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal" class="modal fade ModelDialog" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" />
+                <input type="hidden" name="dbOperations" value="Create" />
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="font-weight-bold">Service <i class="icofont-rounded-down"></i></label>
+                                <select class="form-control" name="serviceId" id="serviceId" required>
+                                    @foreach (var data in Model._serviceModel)
+                                    {
+                                        <option value="@data.Id">@data.Title</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="font-weight-bold">Booking Date</label>
+                                <input type="date" class="form-control" name="bookingDate" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="btnEdit" type="submit" class="btn btn-primary">
+                        <span id="btnSpinner" class="d-none spinner-border  spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Save changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(async function () {
+        await simulateAsycCall();
+        displayMainBody();
+    });
+
+    async function editModel(index) {
+        var table = $('#dataTable').DataTable();
+
+        //Set operation to update
+        $('input[name=dbOperations]').val("Update");
+
+        //--//--//get data
+        var id = table.row(index).data()[0];
+        var userId = table.row(index).data()[1];
+        var serviceId = table.row(index).data()[2];
+        var bookingDate = table.row(index).data()[3];
+
+        $('input[name=id]').val(id);
+        $('input[name=bookingDate]').val(bookingDate);
+
+        getSelectValue("userId", userId);
+        getSelectValue("serviceId", serviceId);
+
+        $('#modal').modal('show');
+        //$("#btnEdit").removeClass('btn-warning');
+    }
+</script> 

@@ -1,0 +1,46 @@
+﻿@page
+@model WEB.Pages.IndexModel
+@{
+}
+
+<div>
+    <div>
+        <h3 class="text-center">Our Services</h3>
+    </div>
+
+    <!-- database table -->
+    <div class="card mt-4">
+        <div class="row">
+            @{
+                foreach (var data in Model.ServicesModels)
+                {
+                    <div class="col-md-4 mb-3">
+                        <a asp-area="" asp-page="/Services/ServicesOverview" asp-route-id=@data.Id>
+                            <div class="card">
+                                <img src="~/Images/@data.ImagePath" height="300" class="rounded" alt="File Not Found" />
+                                <div class="card-body">
+                                    <h5>@data.Title</h5>
+                                    <hr />
+                                    <div class="d-flex justify-content-between">
+                                        <div class=""><span class="text-muted">COST:</span> ZMW @data.Cost</div>
+                                        <div class=""><span class="text-muted">REVIEWS:</span> @data.bookingReviewsModel.Count()</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(async function () {
+        await simulateAsycCall();
+        displayMainBody();
+    });
+
+
+</script> 
