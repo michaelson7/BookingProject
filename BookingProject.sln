@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{2E8226AD-89C2-4156-8171-BFCA8F57A974}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Documents\BOOKIE_SQL_SCRIPTS.sql = ..\..\..\Documents\BOOKIE_SQL_SCRIPTS.sql
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "..\Application\Application.csproj", "{2B90A221-ACD2-48FC-A953-3502F3E08971}"
 EndProject
